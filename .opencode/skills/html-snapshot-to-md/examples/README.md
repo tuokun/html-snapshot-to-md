@@ -1,46 +1,47 @@
-# Examples
+# 示例
 
-This folder contains example conversions of HTML files to Markdown.
+此文件夹包含 HTML 文件转换为 Markdown 的示例。
 
-## Example: Plugin guidelines - Developer Documentation
+## 示例：Obsidian Plugin 指南文档
 
-This example demonstrates the conversion of the Obsidian Plugin Guidelines documentation from HTML to Markdown.
+此示例演示了将 Obsidian Plugin 指南文档从 HTML 转换为 Markdown 的过程。
 
-**Source:** Obsidian Plugin Guidelines Documentation
-**Converted:** Plugin guidelines - Developer Documentation.md
+**来源**：Obsidian Plugin 指南文档
+**转换后**：example.md
 
-### Conversion Results
+### 转换结果
 
-- **Original:** Plugin guidelines - Developer Documentation.html (163 KB)
-- **Converted:** Plugin guidelines - Developer Documentation.md (14 KB)
-- **Images:** 3 images processed
-- **Features:**
-  - Clean content extraction using Mozilla Readability
-  - Automatic image path updates
-  - Metadata preservation (title, author, excerpt)
-  - Format preservation (tables, lists, code blocks)
+- **原始文件**：Plugin guidelines - Developer Documentation.html (163 KB)
+- **转换后**：example.md (14 KB)
+- **图片**：3 张图片已处理
+- **功能特性**：
+  - 使用 Mozilla Readability 提取纯净内容
+  - 自动更新图片路径
+  - 保留元数据（标题、作者、摘要）
+  - 保留格式（表格、列表、代码块）
 
-### How to Use
+### 使用方法
 
 ```bash
 node convert.js "Plugin guidelines - Developer Documentation.html"
 ```
 
-This will generate:
-- `Plugin guidelines - Developer Documentation.md` - The converted Markdown file
-- `images/` - Folder with processed images
+这将生成：
+- `example.md` - 转换后的 Markdown 文件
+- `images/` - 包含处理后的图片的文件夹
 
-## Adding New Examples
+## 添加新示例
 
-To add a new example:
+添加新示例：
 
-1. Save an HTML file from a browser (using "Save As" feature)
-2. Run: `node convert.js <your-file.html>`
-3. Move the generated `.md` file to this examples folder
-4. Document the conversion results here
+1. 从浏览器保存一个 HTML 文件（使用"另存为"功能）
+2. 运行：`node convert.js <your-file.html>`
+3. 将生成的 `.md` 文件移动到此示例文件夹
+4. 重命名为 `example.md`
+5. 在此记录转换结果
 
-## Notes
+## 注意事项
 
-- All examples are derived from publicly available documentation
-- Personal data and sensitive information are excluded
-- Images are referenced with relative paths
+- 所有示例均来自公开的文档
+- 排除了个人数据和敏感信息
+- 图片使用相对路径引用
