@@ -33,7 +33,7 @@ opencode skills load html-snapshot-to-md
 
 加载后，可以向 agent 提出请求：
 
-> 将 `NoSQL.html` 转换为 Markdown
+> 将 `<网页名称>.html` 转换为 Markdown
 
 agent 会自动：
 1. 读取 HTML 文件
@@ -61,10 +61,10 @@ node convert.js <html文件>
 示例：
 ```bash
 # 转换单个 HTML 文件
-node convert.js NoSQL.html
+node convert.js webpage.html
 
 # 转换包含中文路径的文件
-node convert.js "JavaGuide - 沉浸式阅读中.html"
+node convert.js "网页名称.html"
 ```
 
 ## 安装
@@ -86,14 +86,14 @@ npm install
 
 ```
 项目目录/
-├── NoSQL.html                          # 原始 HTML 文件
-├── NoSQL_files/                        # 原始资源文件夹
-├── NoSQL.md                           # 生成的 Markdown 文件
+├── <网页名称>.html                     # 原始 HTML 文件
+├── <网页名称>_files/                   # 原始资源文件夹
+├── <网页名称>.md                      # 生成的 Markdown 文件
 └── images/                            # 图片文件夹
-    ├── NoSQL_img_0.png
-    ├── NoSQL_img_1.png
-    ├── NoSQL_img_2.png
-    └── NoSQL_img_3.png
+    ├── <网页名称>_img_0.png
+    ├── <网页名称>_img_1.png
+    ├── <网页名称>_img_2.png
+    └── <网页名称>_img_3.png
 ```
 
 ## Markdown 格式
@@ -108,25 +108,25 @@ npm install
 ### 示例输出
 
 ```markdown
-# NoSQL基础知识总结
+# 网页标题
 
-**作者:** Guide
+**作者:** 作者名称
 
-**摘要:** NoSQL数据库基础知识总结...
+**摘要:** 文章摘要...
 
 ---
 
-## NoSQL 是什么？
+## 章节标题
 
-NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库...
+这是文章的正文内容...
 
-![](images/NoSQL_img_1.png)
+![](images/<网页名称>_img_1.png)
 
-## SQL 和 NoSQL 有什么区别？
+## 另一个章节标题
 
-| 数据存储模型 | SQL 数据库 | NoSQL 数据库 |
-|------------|-----------|--------------|
-| 存储方式 | 结构化存储 | 非结构化存储 |
+| 表头1 | 表头2 | 表头3 |
+|--------|--------|--------|
+| 内容1 | 内容2 | 内容3 |
 ```
 
 ## 技术栈
@@ -159,7 +159,7 @@ NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库...
 
 - 自动检测资源文件夹中的图片
 - 移动到 `images/` 文件夹
-- 重命名为有序格式（如 `NoSQL_img_0.png`）
+- 重命名为有序格式（如 `<网页名称>_img_0.png`）
 - 更新 Markdown 中的图片链接
 - 支持中文路径和特殊字符
 
@@ -180,24 +180,24 @@ NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库...
 
 从浏览器保存的 HTML 文件：
 ```
-NoSQL.html (93 KB)
-NoSQL_files/
+<网页名称>.html
+<网页名称>_files/
   ├── logo.png
-  ├── sql-nosql-tushi.png
-  ├── types-of-nosql-datastores.png
-  └── gongzhonghao-javaguide.png
+  ├── image1.png
+  ├── image2.png
+  └── image3.png
 ```
 
 ### 输出文件
 
 生成的 Markdown 文件：
 ```
-NoSQL.md (6.8 KB)
+<网页名称>.md
 images/
-  ├── NoSQL_img_0.png
-  ├── NoSQL_img_1.png
-  ├── NoSQL_img_2.png
-  └── NoSQL_img_3.png
+  ├── <网页名称>_img_0.png
+  ├── <网页名称>_img_1.png
+  ├── <网页名称>_img_2.png
+  └── <网页名称>_img_3.png
 ```
 
 更多示例请查看 [examples/](.opencode/skills/html-snapshot-to-md/examples/) 文件夹。
