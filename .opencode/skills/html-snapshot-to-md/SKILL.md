@@ -25,12 +25,9 @@ version: "2.0.0"
 
 ## 前置要求
 
+- [OpenCode](https://opencode.ai) 已安装并配置
 - Node.js v14+
-- npm 依赖：`@mozilla/readability`, `jsdom`, `turndown`
-
-```bash
-npm install
-```
+- 将本 skill 目录复制到 vault 的 `.opencode/skills/` 下，然后运行 `npm install` 安装依赖
 
 ## 使用场景
 

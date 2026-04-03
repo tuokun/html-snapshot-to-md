@@ -17,35 +17,23 @@ Convert web pages (URL or local HTML) to Obsidian-flavored Markdown notes with a
 
 ### Install
 
+This project is an [OpenCode](https://opencode.ai) Skill. Install it into your Obsidian vault:
+
 ```bash
+# 1. Copy the skill directory to your vault's .opencode/skills/
+cp -r .opencode/skills/html-snapshot-to-md/ /path/to/vault/.opencode/skills/
+
+# 2. Install dependencies
+cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
 npm install
 ```
 
-### URL Mode
+### Usage
 
-```bash
-node convert.js https://example.com --noteName "My Note" --tags "test,example"
-```
+Once installed, simply chat in OpenCode to trigger the skill, e.g.:
 
-### Local HTML Mode
-
-```bash
-node convert.js saved-page.html --noteName "My Note" --imageDir "images"
-```
-
-### Programmatic API
-
-```javascript
-const { run } = require('./src/index');
-
-await run({
-  input: 'https://example.com',
-  noteName: 'MyNote',
-  outputDir: '/path/to/output',
-  imageDir: 'images',
-  tags: ['tag1', 'tag2'],
-});
-```
+- "Convert this webpage to a note: https://example.com/..."
+- "Convert this HTML file to an Obsidian note, put images in the images folder"
 
 ## Processing Flow
 
@@ -58,15 +46,17 @@ Input → Fetch → Convert → Process Images → Format → Output
                                       └─ NoteName-desc2.png
 ```
 
-## CLI Options
+## Configuration
+
+Specify via conversation or the programmatic API in SKILL.md:
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| `--noteName` | Note name | Page title |
-| `--imageDir` | Image subdirectory | 附录图 |
-| `--outputDir` | Output directory | Current dir |
-| `--tags` | Tags (comma-separated) | - |
-| `--source` | Source URL | Auto-detected |
+| `noteName` | Note name | Page title |
+| `imageDir` | Image subdirectory | 附录图 |
+| `outputDir` | Output directory | Current dir |
+| `tags` | Tags array | - |
+| `source` | Source URL | Auto-detected |
 
 ## Output Format
 

@@ -17,35 +17,23 @@
 
 ### 安装
 
+本项目为 [OpenCode](https://opencode.ai) Skill，安装到你的 Obsidian vault：
+
 ```bash
+# 1. 将 skill 目录复制到 vault 的 .opencode/skills/ 下
+cp -r .opencode/skills/html-snapshot-to-md/ /path/to/vault/.opencode/skills/
+
+# 2. 安装依赖
+cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
 npm install
 ```
 
-### URL 模式
+### 使用
 
-```bash
-node convert.js https://example.com --noteName "我的笔记" --tags "测试,示例"
-```
+安装后在 OpenCode 中直接对话即可触发 skill，例如：
 
-### 本地 HTML 模式
-
-```bash
-node convert.js saved-page.html --noteName "我的笔记" --imageDir "附录图"
-```
-
-### 编程接口
-
-```javascript
-const { run } = require('./src/index');
-
-await run({
-  input: 'https://programmercarl.com/...',
-  noteName: '哈希表',
-  outputDir: '/vault/蓝图/算法',
-  imageDir: '附录图',
-  tags: ['算法', '哈希表'],
-});
-```
+- 「把这个网页转成笔记：https://programmercarl.com/...」
+- 「把这个 HTML 文件转成 Obsidian 笔记，图片放到附录图文件夹」
 
 ## 处理流程
 
@@ -58,15 +46,17 @@ await run({
                                     └─ 笔记名-描述2.png
 ```
 
-## CLI 选项
+## 可配置选项
+
+通过对话或 SKILL.md 中的编程接口指定：
 
 | 选项 | 说明 | 默认值 |
 |------|------|--------|
-| `--noteName` | 笔记名称 | 网页标题 |
-| `--imageDir` | 图片子目录 | 附录图 |
-| `--outputDir` | 输出目录 | 当前目录 |
-| `--tags` | 标签（逗号分隔） | - |
-| `--source` | 来源 URL | 自动检测 |
+| `noteName` | 笔记名称 | 网页标题 |
+| `imageDir` | 图片子目录 | 附录图 |
+| `outputDir` | 输出目录 | 当前目录 |
+| `tags` | 标签数组 | - |
+| `source` | 来源 URL | 自动检测 |
 
 ## 输出格式
 
