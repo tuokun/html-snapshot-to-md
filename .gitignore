@@ -40,6 +40,8 @@ yarn-error.log*
 
 # OpenCode workspace
 .opencode/*
+!.opencode/skills/
+.opencode/skills/*
 !.opencode/skills/html-snapshot-to-md/
 
 # Session and operation logs
