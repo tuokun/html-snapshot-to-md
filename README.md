@@ -99,19 +99,39 @@ source: "https://example.com"
 
 ```
 html-snapshot-to-md/
-├── src/
+├── src/                        # 开发源码
 │   ├── index.js              # 主入口
 │   ├── fetcher.js            # 内容获取（URL + 本地）
 │   ├── converter.js          # HTML → Markdown
 │   ├── image-handler.js      # 图片处理
 │   ├── obsidian-formatter.js # Obsidian 格式化
 │   └── utils.js              # 工具函数
-├── convert.js                # CLI 入口
-├── .opencode/skills/html-snapshot-to-md/
-│   ├── SKILL.md              # Skill 文档
-│   └── examples/
+├── convert.js                  # CLI 入口
 ├── package.json
-└── README.md
+├── README.md
+├── docs/README_en.md
+├── LICENSE
+└── .opencode/skills/html-snapshot-to-md/   # 自包含 Skill 目录（可直接复制分发）
+    ├── SKILL.md                # Skill 文档
+    ├── convert.js              # CLI 入口（副本）
+    ├── package.json            # 依赖声明（副本）
+    ├── src/                    # 源码（副本）
+    │   ├── index.js
+    │   ├── fetcher.js
+    │   ├── converter.js
+    │   ├── image-handler.js
+    │   ├── obsidian-formatter.js
+    │   └── utils.js
+    └── examples/
+```
+
+### 安装为 Obsidian Skill
+
+将 `.opencode/skills/html-snapshot-to-md/` 目录复制到目标 vault 的 `.opencode/skills/` 下，然后运行：
+
+```bash
+cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
+npm install
 ```
 
 ## 技术栈

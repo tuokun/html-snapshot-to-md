@@ -90,19 +90,39 @@ Content...
 
 ```
 html-snapshot-to-md/
-├── src/
+├── src/                        # Development source
 │   ├── index.js              # Main entry
 │   ├── fetcher.js            # Content fetching (URL + local)
 │   ├── converter.js          # HTML → Markdown
 │   ├── image-handler.js      # Image processing
 │   ├── obsidian-formatter.js # Obsidian formatting
 │   └── utils.js              # Utilities
-├── convert.js                # CLI entry
-├── .opencode/skills/html-snapshot-to-md/
-│   ├── SKILL.md
-│   └── examples/
+├── convert.js                  # CLI entry
 ├── package.json
-└── README.md
+├── README.md
+├── docs/README_en.md
+├── LICENSE
+└── .opencode/skills/html-snapshot-to-md/   # Self-contained Skill directory (copy to distribute)
+    ├── SKILL.md                # Skill documentation
+    ├── convert.js              # CLI entry (copy)
+    ├── package.json            # Dependencies (copy)
+    ├── src/                    # Source code (copy)
+    │   ├── index.js
+    │   ├── fetcher.js
+    │   ├── converter.js
+    │   ├── image-handler.js
+    │   ├── obsidian-formatter.js
+    │   └── utils.js
+    └── examples/
+```
+
+### Install as Obsidian Skill
+
+Copy the `.opencode/skills/html-snapshot-to-md/` directory into your target vault's `.opencode/skills/`, then run:
+
+```bash
+cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
+npm install
 ```
 
 ## Tech Stack
