@@ -124,13 +124,6 @@ cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
 npm install
 ```
 
-## 技术栈
-
-- **jsdom**：Node.js DOM 环境
-- **@mozilla/readability**：内容提取算法
-- **turndown**：HTML → Markdown 转换
-- **原生 https/http**：URL 抓取和图片下载
-
 ## 限制
 
 1. URL 模式仅支持服务端渲染的静态页面

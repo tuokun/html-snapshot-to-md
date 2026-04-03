@@ -115,12 +115,7 @@ cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
 npm install
 ```
 
-## Tech Stack
 
-- **jsdom**: Node.js DOM environment
-- **@mozilla/readability**: Content extraction algorithm
-- **turndown**: HTML to Markdown conversion
-- **Native https/http**: URL fetching and image download
 
 ## Limitations
 
