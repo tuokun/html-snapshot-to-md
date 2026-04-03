@@ -1,14 +1,20 @@
 {
   "name": "html-snapshot-to-md",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Convert web pages (URL or local HTML) to Obsidian-flavored Markdown with semantic image management",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "convert": "node convert.js",
+    "test": "node -e \"require('./src/utils'); require('./src/fetcher'); require('./src/converter'); require('./src/image-handler'); require('./src/obsidian-formatter'); require('./src/index'); console.log('All modules loaded OK')\""
   },
-  "keywords": [],
+  "keywords": [
+    "obsidian",
+    "markdown",
+    "html-to-markdown",
+    "web-scraper"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
