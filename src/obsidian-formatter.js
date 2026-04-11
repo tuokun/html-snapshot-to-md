@@ -5,7 +5,6 @@ function format(markdown, options = {}) {
     tags = [],
     imageMap = {},
     imageDir = '附录图',
-    headingOffset = 1,
   } = options;
 
   let result = '';
@@ -14,7 +13,7 @@ function format(markdown, options = {}) {
 
   result += processImageLinks(markdown, imageMap, imageDir);
 
-  result = adjustHeadings(result, headingOffset);
+  result = adjustHeadings(result);
 
   return result;
 }
@@ -74,16 +73,21 @@ function processImageLinks(markdown, imageMap, imageDir) {
   return result;
 }
 
-function adjustHeadings(markdown, offset) {
+function adjustHeadings(markdown) {
+  const lines = markdown.split('\n');
+  let minLevel = 6;
+  for (const line of lines) {
+    const m = line.match(/^(#{1,6})\s/);
+    if (m) minLevel = Math.min(minLevel, m[1].length);
+  }
+  const offset = minLevel - 2;
   if (offset <= 0) return markdown;
-
-  return markdown
-    .split('\n')
+  return lines
     .map((line) => {
-      const match = line.match(/^(#{1,6})\s/);
-      if (match) {
-        const level = match[1].length;
-        const newLevel = Math.min(level + offset, 6);
+      const m = line.match(/^(#{1,6})\s/);
+      if (m) {
+        const level = m[1].length;
+        const newLevel = Math.max(level - offset, 2);
         return '#'.repeat(newLevel) + line.slice(level);
       }
       return line;

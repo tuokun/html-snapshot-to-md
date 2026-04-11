@@ -15,7 +15,6 @@ async function run(options) {
     imageDir = '附录图',
     source = '',
     tags = [],
-    headingOffset = 1,
   } = options;
 
   const isUrl = input.startsWith('http://') || input.startsWith('https://');
@@ -47,7 +46,6 @@ async function run(options) {
     tags,
     imageMap,
     imageDir,
-    headingOffset,
   });
 
   ensureDir(resolvedOutputDir);
