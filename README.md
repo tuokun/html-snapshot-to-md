@@ -13,20 +13,29 @@
 - **远程图片下载**：自动下载 URL 模式下的远程图片到本地
 - **去重处理**：自动识别并移除重复段落
 
-## 快速开始
+## 安装
 
-### 安装
-
-本项目为 [OpenCode](https://opencode.ai) Skill，安装到你的 Obsidian vault：
+本项目为 [OpenCode](https://opencode.ai) Agent Skill，整个仓库即 Skill，直接整体复制到 skills 目录即可：
 
 ```bash
-# 1. 将 skill 目录复制到 vault 的 .opencode/skills/ 下
-cp -r .opencode/skills/html-snapshot-to-md/ /path/to/vault/.opencode/skills/
+# 方式一：项目本地（推荐，仅当前项目生效）
+cp -r html-snapshot-to-md/ /path/to/project/.opencode/skills/
 
-# 2. 安装依赖
-cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
+# 方式二：全局（所有项目可用）
+cp -r html-snapshot-to-md/ ~/.config/opencode/skills/
+
+# 方式三：兼容 Claude Code
+cp -r html-snapshot-to-md/ /path/to/project/.claude/skills/
+```
+
+复制后安装依赖：
+
+```bash
+cd /path/to/skills/html-snapshot-to-md/
 npm install
 ```
+
+> 也可以用 `git clone` 代替 `cp -r`，方便后续 `git pull` 更新。
 
 ### 使用
 
@@ -89,40 +98,34 @@ source: "https://example.com"
 
 ```
 html-snapshot-to-md/
-├── src/                        # 开发源码
-│   ├── index.js              # 主入口
-│   ├── fetcher.js            # 内容获取（URL + 本地）
-│   ├── converter.js          # HTML → Markdown
-│   ├── image-handler.js      # 图片处理
+├── SKILL.md                # Skill 定义（OpenCode 自动发现）
+├── src/                    # 源码
+│   ├── index.js            # 主入口编排
+│   ├── fetcher.js          # 内容获取（URL + 本地）
+│   ├── converter.js        # HTML → Markdown
+│   ├── image-handler.js    # 图片处理（下载 + 移动 + 语义命名）
 │   ├── obsidian-formatter.js # Obsidian 格式化
-│   └── utils.js              # 工具函数
-├── convert.js                  # CLI 入口
+│   └── utils.js            # 工具函数
+├── convert.js              # CLI 入口
 ├── package.json
+├── examples/
 ├── README.md
 ├── docs/README_en.md
-├── LICENSE
-└── .opencode/skills/html-snapshot-to-md/   # 自包含 Skill 目录（可直接复制分发）
-    ├── SKILL.md                # Skill 文档
-    ├── convert.js              # CLI 入口（副本）
-    ├── package.json            # 依赖声明（副本）
-    ├── src/                    # 源码（副本）
-    │   ├── index.js
-    │   ├── fetcher.js
-    │   ├── converter.js
-    │   ├── image-handler.js
-    │   ├── obsidian-formatter.js
-    │   └── utils.js
-    └── examples/
+└── LICENSE
 ```
 
-### 安装为 Obsidian Skill
-
-将 `.opencode/skills/html-snapshot-to-md/` 目录复制到目标 vault 的 `.opencode/skills/` 下，然后运行：
+## CLI 使用
 
 ```bash
-cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
-npm install
+node convert.js <html文件或URL> [选项]
 ```
+
+选项：
+- `--noteName <name>` 笔记名称
+- `--imageDir <dir>` 图片子目录（默认：附录图）
+- `--outputDir <dir>` 输出目录
+- `--tags <tag1,tag2>` 标签
+- `--source <url>` 来源 URL
 
 ## 限制
 

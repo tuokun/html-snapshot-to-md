@@ -1,7 +1,9 @@
 ---
 name: html-snapshot-to-md
 description: Convert web pages (URL or local HTML) to Obsidian-flavored Markdown notes with semantic image management
-version: "2.0.0"
+license: MIT
+metadata:
+  version: "0.3.0"
 ---
 
 # HTML Snapshot to Markdown Skill

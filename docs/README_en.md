@@ -13,20 +13,29 @@ Convert web pages (URL or local HTML) to Obsidian-flavored Markdown notes with a
 - **Remote Image Download**: Automatic download of remote images to local storage
 - **Deduplication**: Automatic duplicate paragraph removal
 
-## Quick Start
+## Install
 
-### Install
-
-This project is an [OpenCode](https://opencode.ai) Skill. Install it into your Obsidian vault:
+This project is an [OpenCode](https://opencode.ai) Agent Skill. The entire repo IS the skill — just copy it into your skills directory:
 
 ```bash
-# 1. Copy the skill directory to your vault's .opencode/skills/
-cp -r .opencode/skills/html-snapshot-to-md/ /path/to/vault/.opencode/skills/
+# Option 1: Project-local (recommended, only applies to current project)
+cp -r html-snapshot-to-md/ /path/to/project/.opencode/skills/
 
-# 2. Install dependencies
-cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
+# Option 2: Global (available in all projects)
+cp -r html-snapshot-to-md/ ~/.config/opencode/skills/
+
+# Option 3: Claude Code compatible
+cp -r html-snapshot-to-md/ /path/to/project/.claude/skills/
+```
+
+After copying, install dependencies:
+
+```bash
+cd /path/to/skills/html-snapshot-to-md/
 npm install
 ```
+
+> You can also use `git clone` instead of `cp -r` for easy updates via `git pull`.
 
 ### Usage
 
@@ -39,11 +48,11 @@ Once installed, simply chat in OpenCode to trigger the skill, e.g.:
 
 ```
 Input → Fetch → Convert → Process Images → Format → Output
-                                              │
-                                      NoteName.md
-                                      images/
-                                      ├─ NoteName-desc1.png
-                                      └─ NoteName-desc2.png
+                                               │
+                                       NoteName.md
+                                       images/
+                                       ├─ NoteName-desc1.png
+                                       └─ NoteName-desc2.png
 ```
 
 ## Configuration
@@ -80,42 +89,34 @@ Content...
 
 ```
 html-snapshot-to-md/
-├── src/                        # Development source
-│   ├── index.js              # Main entry
-│   ├── fetcher.js            # Content fetching (URL + local)
-│   ├── converter.js          # HTML → Markdown
-│   ├── image-handler.js      # Image processing
+├── SKILL.md                # Skill definition (auto-discovered by OpenCode)
+├── src/                    # Source code
+│   ├── index.js            # Main entry
+│   ├── fetcher.js          # Content fetching (URL + local)
+│   ├── converter.js        # HTML → Markdown
+│   ├── image-handler.js    # Image processing
 │   ├── obsidian-formatter.js # Obsidian formatting
-│   └── utils.js              # Utilities
-├── convert.js                  # CLI entry
+│   └── utils.js            # Utilities
+├── convert.js              # CLI entry
 ├── package.json
+├── examples/
 ├── README.md
 ├── docs/README_en.md
-├── LICENSE
-└── .opencode/skills/html-snapshot-to-md/   # Self-contained Skill directory (copy to distribute)
-    ├── SKILL.md                # Skill documentation
-    ├── convert.js              # CLI entry (copy)
-    ├── package.json            # Dependencies (copy)
-    ├── src/                    # Source code (copy)
-    │   ├── index.js
-    │   ├── fetcher.js
-    │   ├── converter.js
-    │   ├── image-handler.js
-    │   ├── obsidian-formatter.js
-    │   └── utils.js
-    └── examples/
+└── LICENSE
 ```
 
-### Install as Obsidian Skill
-
-Copy the `.opencode/skills/html-snapshot-to-md/` directory into your target vault's `.opencode/skills/`, then run:
+## CLI Usage
 
 ```bash
-cd /path/to/vault/.opencode/skills/html-snapshot-to-md/
-npm install
+node convert.js <html-file-or-url> [options]
 ```
 
-
+Options:
+- `--noteName <name>` Note name
+- `--imageDir <dir>` Image subdirectory (default: 附录图)
+- `--outputDir <dir>` Output directory
+- `--tags <tag1,tag2>` Tags
+- `--source <url>` Source URL
 
 ## Limitations
 
