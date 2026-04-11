@@ -4,7 +4,15 @@ const TurndownService = require('turndown');
 
 function convert(rawData) {
   const { html } = rawData;
-  const dom = new JSDOM(html, {
+
+  const preservedHtml = html.replace(
+    /<pre[^>]*>([\s\S]*?)<code[^>]*class="language-(\w+)"[^>]*>/g,
+    (match, inner, lang) => {
+      return `<pre data-lang="${lang}">${inner}<code class="language-${lang}">`;
+    }
+  );
+
+  const dom = new JSDOM(preservedHtml, {
     url: rawData.url || rawData.path || 'file:///',
   });
 
@@ -27,7 +35,10 @@ function convert(rawData) {
       const code = node.querySelector('code');
       const className = code?.className || '';
       const langMatch = className.match(/language-(\w+)/);
-      const lang = langMatch ? langMatch[1] : '';
+      let lang = langMatch ? langMatch[1] : '';
+      if (!lang) {
+        lang = node.getAttribute('data-lang') || '';
+      }
       const codeContent = code?.textContent || node.textContent;
       return `\n\`\`\`${lang}\n${codeContent.trim()}\n\`\`\`\n`;
     },
