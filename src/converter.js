@@ -1,6 +1,7 @@
 const { JSDOM } = require('jsdom');
 const { Readability } = require('@mozilla/readability');
 const TurndownService = require('turndown');
+const { tables } = require('turndown-plugin-gfm');
 
 function convert(rawData) {
   const { html } = rawData;
@@ -16,7 +17,19 @@ function convert(rawData) {
     url: rawData.url || rawData.path || 'file:///',
   });
 
-  const article = new Readability(dom.window.document).parse();
+  const document = dom.window.document;
+
+  document.querySelectorAll('nav, aside, footer, .sidebar, .header, .navbar, .page-nav, .page-footer').forEach((el) => {
+    el.remove();
+  });
+
+  document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
+    heading.querySelectorAll('.header-anchor').forEach((anchor) => {
+      anchor.remove();
+    });
+  });
+
+  const article = new Readability(document).parse();
   if (!article) {
     throw new Error('Could not extract article content');
   }
@@ -28,6 +41,8 @@ function convert(rawData) {
     emDelimiter: '*',
     strongDelimiter: '**',
   });
+
+  turndownService.use(tables);
 
   turndownService.addRule('codeBlock', {
     filter: (node) => node.nodeName === 'PRE',
@@ -45,7 +60,7 @@ function convert(rawData) {
   });
 
   const markdown = turndownService.turndown(article.content);
-  const images = extractImages(dom.window.document);
+  const images = extractImages(document);
 
   return {
     title: article.title || rawData.title,

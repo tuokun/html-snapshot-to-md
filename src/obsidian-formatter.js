@@ -15,6 +15,8 @@ function format(markdown, options = {}) {
 
   result = adjustHeadings(result);
 
+  result = cleanHeadingLinks(result);
+
   return result;
 }
 
@@ -95,4 +97,8 @@ function adjustHeadings(markdown) {
     .join('\n');
 }
 
-module.exports = { format, generateFrontmatter, processImageLinks, adjustHeadings };
+function cleanHeadingLinks(markdown) {
+  return markdown.replace(/^(#{1,6})\s+\[([^\]]+)\]\([^)]*\)/gm, '$1 $2');
+}
+
+module.exports = { format, generateFrontmatter, processImageLinks, adjustHeadings, cleanHeadingLinks };
