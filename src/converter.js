@@ -25,6 +25,9 @@ function convert(rawData) {
 
   document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
     heading.querySelectorAll('.header-anchor').forEach((anchor) => {
+      while (anchor.firstChild) {
+        heading.insertBefore(anchor.firstChild, anchor);
+      }
       anchor.remove();
     });
   });
@@ -60,7 +63,9 @@ function convert(rawData) {
   });
 
   const markdown = turndownService.turndown(article.content);
-  const images = extractImages(document);
+
+  const articleDom = new JSDOM(article.content);
+  const images = extractImages(articleDom.window.document);
 
   return {
     title: article.title || rawData.title,
