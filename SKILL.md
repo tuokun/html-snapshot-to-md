@@ -3,7 +3,7 @@ name: html-snapshot-to-md
 description: Convert web pages (URL or local HTML) to Obsidian-flavored Markdown notes with semantic image management
 license: MIT
 metadata:
-  version: "0.3.0"
+  version: "0.4.1"
 ---
 
 # HTML Snapshot to Markdown Skill
@@ -119,7 +119,7 @@ const final = format(markdown, {
 ```
 
 格式化内容：
-- **YAML frontmatter**：`cssclasses`, `tags`, `source`, `整理时间`, `author`
+- **YAML frontmatter**：`tags`, `source`, `整理时间`
 - **图片链接**：`![alt](url)` → `![[附录图/笔记名-描述.png]]`
 - **标题偏移**：`#` → `##`，`##` → `###`（Obsidian 用文件名作一级标题）
 - **去重**：移除重复段落
@@ -210,7 +210,6 @@ src/
 
 ```markdown
 ---
-cssclasses: []
 tags:
   - 算法
   - 哈希表
