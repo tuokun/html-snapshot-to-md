@@ -1,6 +1,6 @@
 {
   "name": "html-snapshot-to-md",
-  "version": "0.4.1",
+  "version": "0.5.1",
   "description": "Convert web pages (URL or local HTML) to Obsidian-flavored Markdown with semantic image management",
   "main": "src/index.js",
   "scripts": {

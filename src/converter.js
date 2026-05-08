@@ -2,6 +2,32 @@ const { JSDOM } = require('jsdom');
 const { Readability } = require('@mozilla/readability');
 const TurndownService = require('turndown');
 const { tables } = require('turndown-plugin-gfm');
+const { isRemoteUrl } = require('./utils');
+
+const turndownService = new TurndownService({
+  headingStyle: 'atx',
+  codeBlockStyle: 'fenced',
+  bulletListMarker: '-',
+  emDelimiter: '*',
+  strongDelimiter: '**',
+});
+
+turndownService.use(tables);
+
+turndownService.addRule('codeBlock', {
+  filter: (node) => node.nodeName === 'PRE',
+  replacement: (content, node) => {
+    const code = node.querySelector('code');
+    const className = code?.className || '';
+    const langMatch = className.match(/language-(\w+)/);
+    let lang = langMatch ? langMatch[1] : '';
+    if (!lang) {
+      lang = node.getAttribute('data-lang') || '';
+    }
+    const codeContent = code?.textContent || node.textContent;
+    return `\n\`\`\`${lang}\n${codeContent.trim()}\n\`\`\`\n`;
+  },
+});
 
 function convert(rawData) {
   const { html } = rawData;
@@ -33,39 +59,16 @@ function convert(rawData) {
   });
 
   const article = new Readability(document).parse();
+  dom.window.close();
+
   if (!article) {
     throw new Error('Could not extract article content');
   }
 
-  const turndownService = new TurndownService({
-    headingStyle: 'atx',
-    codeBlockStyle: 'fenced',
-    bulletListMarker: '-',
-    emDelimiter: '*',
-    strongDelimiter: '**',
-  });
-
-  turndownService.use(tables);
-
-  turndownService.addRule('codeBlock', {
-    filter: (node) => node.nodeName === 'PRE',
-    replacement: (content, node) => {
-      const code = node.querySelector('code');
-      const className = code?.className || '';
-      const langMatch = className.match(/language-(\w+)/);
-      let lang = langMatch ? langMatch[1] : '';
-      if (!lang) {
-        lang = node.getAttribute('data-lang') || '';
-      }
-      const codeContent = code?.textContent || node.textContent;
-      return `\n\`\`\`${lang}\n${codeContent.trim()}\n\`\`\`\n`;
-    },
-  });
-
-  const markdown = turndownService.turndown(article.content);
-
   const articleDom = new JSDOM(article.content);
   const images = extractImages(articleDom.window.document);
+  articleDom.window.close();
+  const markdown = turndownService.turndown(article.content);
 
   return {
     title: article.title || rawData.title,
@@ -125,12 +128,11 @@ function extractImages(document) {
       context = `图${index + 1}`;
     }
 
-    const isRemote = src.startsWith('http://') || src.startsWith('https://');
     images.push({
       src,
       alt,
       context,
-      isRemote,
+      isRemote: isRemoteUrl(src),
       index,
     });
   });

@@ -3,33 +3,50 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 
-function fetchFromUrl(url) {
+function httpGet(url) {
   return new Promise((resolve, reject) => {
     const client = url.startsWith('https') ? https : http;
-    const options = {
+    const req = client.get(url, {
       headers: { 'User-Agent': 'Mozilla/5.0' },
       rejectUnauthorized: false,
-    };
-    client.get(url, options, (res) => {
+      timeout: 30000,
+    }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetchFromUrl(res.headers.location).then(resolve).catch(reject);
+        return httpGet(res.headers.location).then(resolve).catch(reject);
       }
       if (res.statusCode !== 200) {
         return reject(new Error(`HTTP ${res.statusCode}: ${url}`));
       }
-      const chunks = [];
-      res.on('data', (chunk) => chunks.push(chunk));
-      res.on('end', () => {
-        const html = Buffer.concat(chunks).toString('utf8');
-        const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
-        resolve({
-          html,
-          url,
-          title: titleMatch ? titleMatch[1].trim() : '',
-          mode: 'url',
-        });
+      resolve(res);
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error(`Request timeout: ${url}`));
+    });
+    req.on('error', reject);
+  });
+}
+
+function extractTitle(html, fallback = '') {
+  const match = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  return match ? match[1].trim() : fallback;
+}
+
+async function fetchFromUrl(url) {
+  const res = await httpGet(url);
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    res.on('data', (chunk) => chunks.push(chunk));
+    res.on('end', () => {
+      const html = Buffer.concat(chunks).toString('utf8');
+      resolve({
+        html,
+        url,
+        title: extractTitle(html),
+        mode: 'url',
       });
-    }).on('error', reject);
+    });
+    res.on('error', reject);
   });
 }
 
@@ -42,12 +59,11 @@ function fetchFromLocal(htmlPath) {
   const htmlFile = path.basename(resolved, '.html');
   const htmlDir = path.dirname(resolved);
   const resourceDir = path.join(htmlDir, htmlFile + '_files');
-  const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
 
   return {
     html,
     path: resolved,
-    title: titleMatch ? titleMatch[1].trim() : htmlFile,
+    title: extractTitle(html, htmlFile),
     resourceDir: fs.existsSync(resourceDir) ? resourceDir : null,
     htmlDir,
     htmlFile,
@@ -55,4 +71,4 @@ function fetchFromLocal(htmlPath) {
   };
 }
 
-module.exports = { fetchFromUrl, fetchFromLocal };
+module.exports = { fetchFromUrl, fetchFromLocal, httpGet };

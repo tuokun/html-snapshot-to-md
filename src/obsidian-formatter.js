@@ -1,6 +1,7 @@
+const { isRemoteUrl } = require('./utils');
+
 function format(markdown, options = {}) {
   const {
-    metadata = {},
     source = '',
     tags = [],
     imageMap = {},
@@ -9,7 +10,7 @@ function format(markdown, options = {}) {
 
   let result = '';
 
-  result += generateFrontmatter({ source, tags, metadata });
+  result += generateFrontmatter({ source, tags });
 
   result += processImageLinks(markdown, imageMap, imageDir);
 
@@ -20,7 +21,7 @@ function format(markdown, options = {}) {
   return result;
 }
 
-function generateFrontmatter({ source, tags, metadata }) {
+function generateFrontmatter({ source, tags }) {
   const lines = ['---'];
   if (tags.length > 0) {
     lines.push('tags:');
@@ -49,21 +50,17 @@ function processImageLinks(markdown, imageMap, imageDir) {
   });
 
   for (const [oldPath, newPath] of Object.entries(imageMap)) {
-    if (oldPath.startsWith('http://') || oldPath.startsWith('https://')) continue;
+    if (isRemoteUrl(oldPath)) continue;
 
     const escapedOld = oldPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     result = result.replace(
       new RegExp(`!\\[[^\\]]*\\]\\([^)]*${escapedOld}[^)]*\\)`, 'g'),
       `![[${newPath}]]`
     );
-    result = result.replace(
-      new RegExp(escapedOld, 'g'),
-      newPath
-    );
   }
 
   result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
-    if (src.startsWith('http://') || src.startsWith('https://')) return match;
+    if (isRemoteUrl(src)) return match;
     if (src.startsWith('[[')) return match;
     return `![[${src}]]`;
   });

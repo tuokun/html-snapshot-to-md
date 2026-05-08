@@ -4,7 +4,7 @@ const { fetchFromUrl, fetchFromLocal } = require('./fetcher');
 const { convert } = require('./converter');
 const { processImages } = require('./image-handler');
 const { format } = require('./obsidian-formatter');
-const { removeDuplicates, ensureDir } = require('./utils');
+const { removeDuplicates, ensureDir, isRemoteUrl } = require('./utils');
 
 async function run(options) {
   const {
@@ -17,8 +17,7 @@ async function run(options) {
     tags = [],
   } = options;
 
-  const isUrl = input.startsWith('http://') || input.startsWith('https://');
-  const resolvedMode = mode === 'auto' ? (isUrl ? 'url' : 'local') : mode;
+  const resolvedMode = mode === 'auto' ? (isRemoteUrl(input) ? 'url' : 'local') : mode;
 
   const rawData = resolvedMode === 'url'
     ? await fetchFromUrl(input)

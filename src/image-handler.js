@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
-const http = require('http');
+const { httpGet } = require('./fetcher');
 const { sanitizeFileName, ensureDir, getFileExtension, generateImageName } = require('./utils');
 
 async function processImages(images, options) {
@@ -16,9 +15,9 @@ async function processImages(images, options) {
   ensureDir(targetDir);
 
   const existingNames = new Set(
-    fs.existsSync(targetDir)
-      ? fs.readdirSync(targetDir).filter((f) => fs.statSync(path.join(targetDir, f)).isFile())
-      : []
+    fs.readdirSync(targetDir, { withFileTypes: true })
+      .filter((f) => f.isFile())
+      .map((f) => f.name)
   );
 
   const imageMap = {};
@@ -58,7 +57,8 @@ async function processImages(images, options) {
         imageMap[path.basename(img.src)] = `${imageDir}/${newName}`;
       }
       successCount++;
-    } catch {
+    } catch (e) {
+      console.warn(`  [WARN] Image failed: ${img.src} - ${e.message}`);
       failCount++;
     }
   }
@@ -72,19 +72,8 @@ async function processImages(images, options) {
 }
 
 function downloadImage(url, destPath) {
-  return new Promise((resolve, reject) => {
-    const client = url.startsWith('https') ? https : http;
-    const opts = {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
-      rejectUnauthorized: false,
-    };
-    client.get(url, opts, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return downloadImage(res.headers.location, destPath).then(resolve).catch(reject);
-      }
-      if (res.statusCode !== 200) {
-        return reject(new Error(`HTTP ${res.statusCode}: ${url}`));
-      }
+  return httpGet(url).then((res) => {
+    return new Promise((resolve, reject) => {
       const stream = fs.createWriteStream(destPath);
       res.pipe(stream);
       stream.on('finish', () => {
@@ -92,7 +81,7 @@ function downloadImage(url, destPath) {
         resolve();
       });
       stream.on('error', reject);
-    }).on('error', reject);
+    });
   });
 }
 

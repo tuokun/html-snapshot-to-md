@@ -2,6 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+function isRemoteUrl(src) {
+  return src.startsWith('http://') || src.startsWith('https://');
+}
+
 function sanitizeFileName(name) {
   return name
     .replace(/[<>:"/\\|?*\n\r]/g, '')
@@ -10,9 +14,7 @@ function sanitizeFileName(name) {
 }
 
 function ensureDir(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
+  fs.mkdirSync(dirPath, { recursive: true });
 }
 
 function getFileExtension(filePath) {
@@ -57,6 +59,7 @@ function generateImageName(noteName, description, ext, existingNames) {
 }
 
 module.exports = {
+  isRemoteUrl,
   sanitizeFileName,
   ensureDir,
   getFileExtension,
