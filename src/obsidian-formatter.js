@@ -22,7 +22,6 @@ function format(markdown, options = {}) {
 
 function generateFrontmatter({ source, tags, metadata }) {
   const lines = ['---'];
-  lines.push('cssclasses: []');
   if (tags.length > 0) {
     lines.push('tags:');
     tags.forEach((tag) => lines.push(`  - ${tag}`));
@@ -33,9 +32,6 @@ function generateFrontmatter({ source, tags, metadata }) {
   const now = new Date();
   const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   lines.push(`整理时间: "${date}"`);
-  if (metadata.author) {
-    lines.push(`author: "${metadata.author}"`);
-  }
   lines.push('---');
   lines.push('');
   return lines.join('\n');
