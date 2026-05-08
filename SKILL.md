@@ -3,7 +3,7 @@ name: html-snapshot-to-md
 description: Convert web pages (URL or local HTML) to Obsidian-flavored Markdown notes with semantic image management
 license: MIT
 metadata:
-  version: "0.4.1"
+  version: "0.5.2"
 ---
 
 # HTML Snapshot to Markdown Skill
@@ -229,6 +229,21 @@ source: "https://programmercarl.com/..."
 
 ![[附录图/哈希表-哈希函数.png]]
 ```
+
+## 更新
+
+检查当前版本与远端是否一致，不一致则拉取最新代码：
+
+```bash
+cd <skill目录> && git fetch origin && git log --oneline -1 && git pull origin master
+```
+
+skill 目录位置：
+- 项目级：`<项目>/.opencode/skills/html-snapshot-to-md/`
+- 全局：`~/.config/opencode/skills/html-snapshot-to-md/`
+- Claude Code：`<项目>/.claude/skills/html-snapshot-to-md/`
+
+> 需要以 `git clone` 方式安装才支持更新。`cp -r` 安装的用户需重新下载。
 
 ## 限制
 
